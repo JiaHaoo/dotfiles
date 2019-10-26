@@ -1,0 +1,232 @@
+# Hackathon 9 Project:
+#   Mechanize osmium style guide using `clang-format` / write a static linter
+#
+# Authors:
+#   - Kartik Singhal <ksinghal@purestorage.com>
+#   - Phil Hord <phord@purestorage.com>
+#
+# Version History
+#   v0.2 August 23, 2017
+#   v0.1 August 18, 2017
+#
+# Notes:
+#   - Built upon the .clang-format used in iridium code base, customized to match closely to Osmium
+#     coding style v2 available at:
+#     https://wiki.purestorage.com/display/psw/Osmium+coding+style+v2#Osmiumcodingstylev2-Formatting
+#   - Comments before certain options below state the rule from the style guide
+#   - Tested using clang-format version 6.0.0
+#     (http://llvm.org/git/clang.git b2b075cecbf00cc6cb9a4ba3055d5404e1994e16)
+#     (http://llvm.org/git/llvm.git 9b4ee7baf46a127d7549545bc23fd03f91187872)
+#     with options documented at: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+#
+# Status:
+#   Comes close, but doesn't fully implement all the rules. Some are not supported in clang-format,
+#   while some are inconsistent with existing code base, some are just not explicitly mentioned but
+#   are being followed in the code base. This config file could be used as a starting point to write
+#   a more conforming formatter once the Osmium Style Guide is made more uniform, exhaustive and
+#   cross referenceable (includes a way to reference the rules by numbers).
+#
+# Contact:
+#   Phil Hord
+# ---
+Language:        Cpp
+ 
+# The public/private keywords have zero indentation
+AccessModifierOffset: -8
+ 
+# On one line if it fits; otherwise, wrap arguments at the parenthesis.
+# // Single line function call.
+# ret_val = function_name(par_name1, par_name2);
+#
+# // Multiline function call.
+# ret_val = looooong_function_name(par_name1,
+#                                  par_name2);
+# (probably redundant, hence commented)
+#AlignAfterOpenBracket: Align
+ 
+# No need to align local variables, member variables, function arguments on tab-stops.
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+ 
+# (See code sample in section: 'Horizontal Whitespace')
+AlignTrailingComments: true
+ 
+# (true from observation; osmium style guide isn't explicit)
+AllowAllParametersOfDeclarationOnNextLine: true
+ 
+# (true from observation; osmium style guide isn't explicit)
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+ 
+# The return type of a function should be on it's own line.
+# (doesn't seem true for functions inside a class, see code sample
+# in section 'Function Declaration and Definition' hence toplevel only)
+AlwaysBreakAfterReturnType: TopLevel
+ 
+# (osmium style guide isn't explicit)
+AlwaysBreakBeforeMultilineStrings: false
+ 
+# (true from observation; osmium style guide isn't explicit)
+AlwaysBreakTemplateDeclarations: true
+ 
+# (true from observation; osmium style guide isn't explicit)
+BinPackParameters: false
+ 
+BreakBeforeBraces: Custom
+BraceWrapping:
+    # (see code samples in sections 'Function Declaration and Definition' and 'Class Format')
+    AfterClass: true
+    AfterFunction: true
+    AfterStruct: true
+ 
+    # (style guide isn't explicit; but these declare things same as above)
+    AfterEnum: true
+    AfterUnion: true
+ 
+    # (see code samples in sections 'Conditionals' and 'Loops and Switch Statements')
+    AfterControlStatement: false
+ 
+    # (see code sample in section 'Namespace Formatting')
+    AfterNamespace: false
+ 
+    # The else goes on the same line as the closing brace.
+    BeforeElse: false
+ 
+    # (style guide isn't explicit; similar to else)
+    BeforeCatch: false
+ 
+    # (true from observation; osmium style guide isn't explicit)
+    IndentBraces: false
+ 
+    # No spaces inside empty braces.
+    SplitEmptyFunction: false
+ 
+    # (style guide isn't explicit; similar to above)
+    SplitEmptyRecord: false
+ 
+# When you have a boolean expression that is longer than the standard line length,
+# break the line after the operator aligning the next line to the parentheses (if any)
+# of the most inner expression.  Put "&&" and "||" at the end of the previous line
+BreakBeforeBinaryOperators: false
+ 
+# (style guide not explicit, see code samples in sections 'Class Format' and 'Horizontal
+# Whitespace'. Caveat: works only for multiple inheritance)
+BreakBeforeInheritanceComma: true
+ 
+# If the inherited base of a class appears in the next line, the colon ":" should appear
+# at the front of the new line, not at the end of the previous line. Same format for
+# constructor initializer list - one colon and commas under it.
+BreakConstructorInitializers: BeforeComma
+ 
+# (style guide doesn't say anything)
+#BreakBeforeTernaryOperators: true
+ 
+# Keep each line in the code to less than 100 characters.
+ColumnLimit:     100
+ 
+# (though desirable, this conflicts with BreakConstructorInitializers above, its effect
+# seems redundant so it's safe to leave it commented)
+#ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ 
+# 8 space indent (in section 'Constructor Initializer Lists')
+ConstructorInitializerIndentWidth: 8
+ 
+# (style guide not explicit, but we have 8 space indent everywhere)
+ContinuationIndentWidth: 8
+ 
+# (see code sample in section 'Variable and Array Initialization')
+Cpp11BracedListStyle: true
+ 
+# (style guide doesn't say anything, keeping as in Iridium style guide)
+DerivePointerAlignment: false
+ 
+# (we obviously do not want this)
+DisableFormat:   false
+ 
+# (too experimental for production usage)
+#ExperimentalAutoDetectBinPacking: true
+ 
+# (style guide isn't explicit; based on observation)
+ForEachMacros: ['FOR_STREAM', 'FOR_STREAM_CURSOR']
+ 
+# Align the case statement with the switch.
+IndentCaseLabels: false
+ 
+# Use only spaces, and indent 8 spaces at a time.
+IndentWidth:     8
+ 
+# (see code sample in section 'Function Declaration and Definition')
+IndentWrappedFunctionNames: false
+ 
+# (true from obervation; see any code samples in style guide)
+KeepEmptyLinesAtTheStartOfBlocks: false
+ 
+# (this should probably be 1, keeping Iridium default)
+MaxEmptyLinesToKeep: 2
+ 
+# The contents of namespaces are indented.
+# (there is an exception for file-scope namespaces in the style guide,
+# but currently hard to enforce (`inner` is not what we want))
+NamespaceIndentation: All
+ 
+# ( these are all tweakable, leaving same as Iridium)
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyReturnTypeOnItsOwnLine: 60
+ 
+# If you go over that limit (because it makes the code easier to read),
+# then don't go over it by much.
+# (ColumnLimit 100 is currently a hard limit (ie the above rule is not
+# enforced here, but only pasted here for reference ) with the
+# following value, penalty needs tweaking to fit our rule)
+PenaltyExcessCharacter: 1000000
+ 
+# (true from obervation; see any code sample)
+PointerAlignment: Middle
+ 
+# (true from observation; osmium style guide isn't explicit)
+SpaceAfterTemplateKeyword: false
+ 
+# Assignment operators always have spaces around them.
+SpaceBeforeAssignmentOperators: true
+ 
+# if (condition) {  // Good - proper space after IF and before {.
+# (functions do not have space after them and before paren from observation)
+SpaceBeforeParens: ControlStatements
+ 
+# (true from obervation; see any code samples in style guide)
+SpaceInEmptyParentheses: false
+ 
+# (style guide isn't explicit; 2 seems ideal)
+SpacesBeforeTrailingComments: 2
+ 
+# vector<string> x;           // No spaces inside the angle
+# y = static_cast<char*>(x);  // brackets (< and >), before
+#                             // <, or between >( in a cast.
+SpacesInAngles:  false
+ 
+# (style guide doesn't say anything except avoid C-Style casts,
+# keeping as in Iridium style guide)
+SpacesInCStyleCastParentheses: false
+ 
+# (style guide doesn't say anything, keeping as in Iridium style guide)
+SpacesInContainerLiterals: true
+ 
+# You may include spaces between the parentheses and arguments,
+# although the most common form is without spaces.
+# If in doubt, do not add the spaces.
+SpacesInParentheses: false
+ 
+# (we do write C++11 code)
+Standard:        Cpp11
+ 
+# Use only spaces, and indent 8 spaces at a time.
+TabWidth:        8
+UseTab:          Never
+ 
+  
+# ---

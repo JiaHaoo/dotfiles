@@ -1,0 +1,28 @@
+[user]
+	email = pascal.hjia@gmail.com
+	name = Hao Jia
+[core]
+        editor = vim
+    autocrlf = input
+[commit]
+        template = /home/pascal/.gitmessage.txt
+[push]
+    default = upstream
+# [rerere]
+#     enabled = 1
+[branch]
+    autosetuprebase = always
+[color "decorate"]
+    tag = red
+    HEAD = cyan
+[color "diff"]
+    commit = blue
+    whitespace = red reverse
+[pretty]
+    color = tformat:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset
+[alias]
+    # pretty one-line logs
+    lg = log --pretty=color
+    lgg = log --graph --pretty=color
+[pull]
+    rebase = true
