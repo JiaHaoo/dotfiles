@@ -144,6 +144,11 @@ pretty () {
 # PATH
 PATH=${PATH}:~/tools/
 
-# cmake
+## cmake
+# add_library_path: required before running executables directly,
+# if need to link to lib/ under project directory
+alias add_library_path="export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib"
+# build_all: build and install
 alias build_all="cd $(git rev-parse --show-toplevel); cmake -H. -Bbuild && cmake --build build -- -j3; cmake --build build --target install; cd -"
-alias test_all="$(git rev-parse --show-toplevel)/bin/unittest"
+# test_all: add library path and run unittest cmd, doesn't change environment variable LD_LIBRARY_PATH
+alias test_all="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib $(git rev-parse --show-toplevel)/bin/unittest"
