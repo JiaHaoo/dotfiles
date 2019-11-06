@@ -177,4 +177,7 @@ lookfor () {
    eval $cmd
 }
 
-source ~/.new_project.sh
+
+# run the following cmd (in another shell, don't uncomment it) if it's a new machine
+# cd; mkdir -p tools && cd tools && ln -s ../workspace/dotfiles/new_project.sh new_project.sh
+source ~/tools/new_project.sh
