@@ -117,17 +117,6 @@ if ! shopt -oq posix; then
 fi
 
 
-# prompt
-function parse_git_dirty {
-      [[ $(git status 2> /dev/null | tail -n1 | awk '{print $NF}') != "clean" ]] && echo "*"
-}
-function parse_git_branch {
-      git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
-}
-
-
-PS1='\[\e[33;49m\]\t ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w \[\e[33;49m\]$(parse_git_branch)\n\[\033[00m\]$ '
-
 # copy & paste (not working)
 alias copy='xclip -selection clipboard'
 alias paste='xclip -selection clipboard -o'
@@ -147,8 +136,43 @@ PATH=${PATH}:~/tools/
 ## cmake
 # add_library_path: required before running executables directly,
 # if need to link to lib/ under project directory
-alias add_library_path="export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib"
+function add_library_path {
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib;
+}
 # build_all: build and install
-alias build_all="cd $(git rev-parse --show-toplevel); cmake -H. -Bbuild && cmake --build build -- -j3 && cmake --build build --target install; cd -"
+function gg_build {
+    cd $(git rev-parse --show-toplevel);
+    cmake -H. -Bbuild &&
+	cmake --build build -- -j3 &&
+	cmake --build build --target install;
+    cd -;
+}
 # test_all: add library path and run unittest cmd, doesn't change environment variable LD_LIBRARY_PATH
-alias test_all="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib $(git rev-parse --show-toplevel)/bin/unittest"
+function gg_test {
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib $(git rev-parse --show-toplevel)/bin/unittest;
+}
+
+
+# prompt
+function parse_git_dirty {
+      [[ $(git status 2> /dev/null | tail -n1 | awk '{print $NF}') != "clean" ]] && echo "*"
+}
+function parse_git_branch {
+      git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
+}
+
+
+PS1='\[\e[33;49m\]\t ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w \[\e[33;49m\]$(parse_git_branch)\n\[\033[00m\]$ '
+
+lookfor () {
+   local suffix=$1
+   local keyword=$2
+   local num_context=$3
+   local cmd=$(printf "find . -not -path '*/\.*' -name '*%s' -type f |xargs grep -ni --color '%s'" "$suffix" "$keyword")
+   if [ -n "$num_context" ]; then
+       cmd=$(printf "${cmd} -C %s" $num_context)
+   fi
+
+   echo ">> $cmd"
+   eval $cmd
+}
