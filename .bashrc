@@ -132,6 +132,7 @@ pretty () {
 
 # PATH
 PATH=${PATH}:~/tools/
+PATH=${HOME}/.local/bin:${PATH}
 
 ## cmake
 # add_library_path: required before running executables directly,
