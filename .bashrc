@@ -140,7 +140,7 @@ PATH=${HOME}/.local/bin:${PATH}
 function add_library_path {
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib;
 }
-# build_all: build and install
+# gg_build: build and install
 function gg_build {
     cd $(git rev-parse --show-toplevel);
     cmake -H. -Bbuild &&
@@ -148,9 +148,13 @@ function gg_build {
 	cmake --build build --target install;
     cd -;
 }
-# test_all: add library path and run unittest cmd, doesn't change environment variable LD_LIBRARY_PATH
+# gg_test: add library path and run unittest cmd, doesn't change environment variable LD_LIBRARY_PATH
 function gg_test {
     LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(git rev-parse --show-toplevel)/lib $(git rev-parse --show-toplevel)/bin/unittest;
+}
+# gg_app: run main()
+function gg_app {
+    $(git rev-parse --show-toplevel)/bin/app
 }
 
 
