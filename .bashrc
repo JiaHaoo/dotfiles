@@ -186,3 +186,9 @@ lookfor () {
 # run the following cmd (in another shell, don't uncomment it) if it's a new machine
 # cd; mkdir -p .bash && cd .bash && ln -s ../workspace/dotfiles/new_project.sh new_project.sh
 source ~/.bash/new_project.sh
+
+# set default editor to vim 
+EDITOR=/usr/bin/vim 
+
+
+
